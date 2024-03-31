@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Guess Game</title>
+</head>
+<body>
+    <h1>Guess Game</h1>
+    <p>Welcome, {{ name }}! You are playing Guess Game with difficulty level: {{ difficulty }}</p>
+    <form action="" method="POST">
+        <label for="guess">Enter your guess:</label>
+        <input type="number" id="guess" name="guess" min="1" max="{{ difficulty }}" required>
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>

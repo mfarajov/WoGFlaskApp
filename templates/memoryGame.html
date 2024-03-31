@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Memory Game</title>
+</head>
+<body>
+
+    <h1>Memory Game</h1>
+
+    <p>Welcome, {{ name }}! You are playing Memory Game with difficulty level:  {{ difficulty }}</p>
+
+    <p>Remember these numbers:</p>
+    <p id="sequence">{{ sequence }}</p>
+
+    <form action="/memory-game" method="POST">
+        <label for="userSequence">Enter the sequence you remember:</label>
+        <input type="text" id="userSequence" name="userSequence" required>
+        <button type="Submit">Submit</button>
+    </form>
+
+    <script>
+        setTimeout(function() {
+            document.getElementById('sequence').style.visibility = 'hidden';
+        }, 700);  // Hide the sequence after 700ms
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>World of Games</title>
+</head>
+<body>
+    <h1>Welcome to the World of Games!</h1>
+    <p1>Please enter your name and select a game from the dropdown!</p1>
+    <form id="gameForm">
+        <br>
+        <input type="text" id="playerName" placeholder="Enter your name "/>
+        <br>
+        <br>
+        <select name="game" id="gameSelect">
+            <option value="memory-game">Memory Game</option>
+            <option value="guess-game">Guess Game</option>
+            <option value="currency-roulette-game">Currency Roulette Game</option>
+        </select>
+        <br>
+        <br>
+        <p2>Select difficulty level from 1 to 99</p2>
+        <br>
+        <br>
+        <input type="number" id="difficultyLevel" min="1" max="99" required />
+        <br>
+        <br>
+        <p1> Click the START button to enjoy the game!</p1>
+        <br>
+        <br>
+        <button type="button" onclick="runGame()">START</button>
+        <br>
+    </form>
+
+    <script>
+        function runGame() {
+            const playerName = document.getElementById('playerName').value;
+            let difficultyLevel = document.getElementById('difficultyLevel').value;
+            difficultyLevel = difficultyLevel ? difficultyLevel : '1';
+            const selectedGame = document.getElementById('gameSelect').value;
+            window.location.href = `/${selectedGame}?name=${encodeURIComponent(playerName)}&difficulty=${encodeURIComponent(difficultyLevel)}`;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Game Result</title>
+</head>
+<body>
+    <h1>Dear {{ name }}! {{ message }}</h1>
+
+    {% if interval %}
+        <p>The approximate amount is between {{ interval[0] }} and {{ interval[1] }}</p>
+    {% endif %}
+
+    {% if secret_number %}
+        <p>The secret number was: {{ secret_number }}</p>
+    {% endif %}
+
+    {% if sequence %}
+        <p>The correct sequence was: {{ sequence }}</p>
+    {% endif %}
+
+    <p>Your cumulative score is {{ score }}</p>
+    <br>
+    <br>
+    <a href="/">Go back to main page</a>
+</body>
+</html>
