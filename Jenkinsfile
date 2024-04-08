@@ -4,12 +4,22 @@ pipeline {
         DOCKER_IMAGE = 'worldofgames'
         CONTAINER_NAME = 'worldofgames-container'
         DOCKER_HUB_REPO = 'muradvalehfarajov/worldofgames'
-        GITHUB_REPO = 'https://github.com/mfarajov/WoGFlaskApp.git'
+
     }
     stages {
         stage('Checkout') {
             steps {
-                git credentialsId: 'github-pat', url: GITHUB_REPO
+                checkout([
+                    $class: 'GitSCM',
+                    branches: [[name: '*/master']],
+                    extensions: [],
+                    userRemoteConfigs: [
+                        [
+                            credentialsId: 'githubcredentials',
+                            url: 'git@github.com:mfarajov/WoGFlaskApp.git'
+                        ]
+                    ]
+                ])
             }
         }
         stage('Build') {
@@ -44,7 +54,6 @@ pipeline {
                         echo \$cred.GetNetworkCredential().Password | docker login --username \$cred.UserName --password-stdin
                         """, returnStdout: true).trim()
                     }
-
                     // Tagging and pushing the Docker image
                     bat "docker tag ${env.DOCKER_IMAGE} ${env.DOCKER_HUB_REPO}:latest"
                     bat "docker push ${env.DOCKER_HUB_REPO}:latest"
