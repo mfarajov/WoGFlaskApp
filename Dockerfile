@@ -18,6 +18,7 @@ EXPOSE 8777
 
 # Define environment variable for Flask
 ENV FLASK_APP=start.py
+
 ENV FLASK_RUN_HOST=0.0.0.0
 ENV FLASK_RUN_PORT=8777
 
