@@ -5,7 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: "muradvalehfarajov/worldofgames:latest"
+    image: "muradvalehfarajov/worldofgames:${IMAGE_TAG:-latest}"
     container_name: worldofgames-container
     ports:
       - "8777:8777"
