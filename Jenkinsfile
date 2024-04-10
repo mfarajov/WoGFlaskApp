@@ -1,11 +1,15 @@
 pipeline {
+
     agent any
+
     environment {
         DOCKER_IMAGE = 'worldofgames'
         CONTAINER_NAME = 'worldofgames-container'
         DOCKER_HUB_REPO = 'muradvalehfarajov/worldofgames'
-
+        // IMAGE_TAG = "build-${BUILD_NUMBER}"
+        IMAGE_TAG = "v1.0.0"
     }
+
     stages {
         stage('Checkout') {
             steps {
@@ -22,50 +26,52 @@ pipeline {
                 ])
             }
         }
-        stage('Build') {
-            steps {
-                script {
-                    docker.build("${DOCKER_IMAGE}")
-                }
-            }
-        }
-        stage('Run') {
-            steps {
-                script {
-                    // Stop any previously running containers to avoid port conflicts
-                    // Ignoring errors if the container doesn't exist
-                    bat "docker stop ${env.CONTAINER_NAME} 2>NUL || exit /b 0"
-                    bat "docker rm ${env.CONTAINER_NAME} 2>NUL || exit /b 0"
 
-                    // Run the container with specified settings
-                    bat "docker run -d --name ${env.CONTAINER_NAME} -p 8777:8777 -v ${env.WORKSPACE}\\Scores.txt:/app/Scores.txt ${env.DOCKER_IMAGE}"
+        stage('Prepare Environment') {
+            steps {
+                script {
+                    // Create or update the .env file with the current IMAGE_TAG for docker-compose to use
+                    bat "echo IMAGE_TAG=${env.IMAGE_TAG} > .env"
                 }
             }
         }
 
-        stage('Finalize') {
+        stage('Build and Run') {
+            steps {
+                script {
+                    //bat "docker-compose -p ${DOCKER_IMAGE} up --build -d"
+
+                    // Build the Docker image with the dynamically generated tag
+                    bat "docker build -t ${DOCKER_HUB_REPO}:${IMAGE_TAG} ."
+                    // Up the docker-compose project with the new image
+                    bat "docker-compose -p ${DOCKER_IMAGE} up -d"
+                }
+            }
+        }
+
+        stage('Publish') {
             steps {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
-                        // Use the credentials securely without directly embedding them into the script
+                        // Login to Docker Hub using PowerShell
                         powershell(script: """
                         \$pass = '${PASS}' | ConvertTo-SecureString -AsPlainText -Force
                         \$cred = New-Object System.Management.Automation.PSCredential ('${USER}', \$pass)
                         echo \$cred.GetNetworkCredential().Password | docker login --username \$cred.UserName --password-stdin
                         """, returnStdout: true).trim()
                     }
-                    // Tagging and pushing the Docker image
-                    bat "docker tag ${env.DOCKER_IMAGE} ${env.DOCKER_HUB_REPO}:latest"
-                    bat "docker push ${env.DOCKER_HUB_REPO}:latest"
+                    bat "docker push ${DOCKER_HUB_REPO}:${IMAGE_TAG}"
                 }
             }
         }
-
     }
+
     post {
         always {
-            // Cleanup after pipeline finishes
-            bat "docker rmi ${env.DOCKER_IMAGE} 2>NUL || exit /b 0"
+            script {
+            bat "docker-compose -p ${DOCKER_IMAGE} down"
+            bat "docker rmi ${DOCKER_HUB_REPO}:${IMAGE_TAG} || exit /b 0"
+            }
         }
     }
 }
