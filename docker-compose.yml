@@ -2,9 +2,9 @@ version: '3.8'
 
 services:
   worldofgames:
-    build:
-      context: .
-      dockerfile: Dockerfile
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
     image: "muradvalehfarajov/worldofgames:${IMAGE_TAG:-latest}"
     container_name: worldofgames-container
     ports:
