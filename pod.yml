@@ -18,11 +18,11 @@ spec:
           value: "0.0.0.0"
         - name: FLASK_RUN_PORT
           value: "8777"
-      volumeMounts:
-        - name: scores-volume
-          mountPath: /app/Scores.txt
-          subPath: Scores.txt
-      volumes:
-        - name: scores-volume
-          hostPath:
-            path: /mnt/sda1/WoGFlaskApp/Scores.txt
+#      volumeMounts:
+#        - name: scores-volume
+#          mountPath: /app/Scores.txt
+#          subPath: Scores.txt
+#      volumes:
+#        - name: scores-volume
+#          hostPath:
+#            path: /mnt/sda1/WoGFlaskApp/Scores.txt
