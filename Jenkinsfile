@@ -6,9 +6,8 @@ pipeline {
         DOCKER_IMAGE = 'worldofgames'
         CONTAINER_NAME = 'worldofgames-container'
         DOCKER_HUB_REPO = 'muradvalehfarajov/worldofgames'
-        // IMAGE_TAG = "build-${BUILD_NUMBER}"
-        IMAGE_TAG = "${env.BUILD_NUMBER ?: 'latest'}"
-        // IMAGE_TAG = "v1.0.0"
+        // IMAGE_TAG = "${env.BUILD_NUMBER ?: 'latest'}"
+        IMAGE_TAG = "v1.0.0"
     }
 
     stages {
