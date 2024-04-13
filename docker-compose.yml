@@ -2,7 +2,8 @@ version: '3.8'
 
 services:
   worldofgames:
-    image: "muradvalehfarajov/worldofgames:${IMAGE_TAG:-latest}"
+#    image: "muradvalehfarajov/worldofgames:${IMAGE_TAG:-latest}"
+    image: "muradvalehfarajov/worldofgames:${IMAGE_TAG}"
     container_name: worldofgames-container
     ports:
       - "8777:8777"

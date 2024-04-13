@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: worldofgames-pod
+  labels:
+    app: worldofgames
+spec:
+  containers:
+    - name: worldofgames-container
+      image: muradvalehfarajov/worldofgames:v1.0.0
+#      image: muradvalehfarajov/worldofgames:IMAGE_TAG_PLACEHOLDER
+      ports:
+        - containerPort: 8777
+      env:
+        - name: FLASK_APP
+          value: "start.py"
+        - name: FLASK_RUN_HOST
+          value: "0.0.0.0"
+        - name: FLASK_RUN_PORT
+          value: "8777"
