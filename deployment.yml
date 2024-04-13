@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: worldofgames-deployment
+  labels:
+    app: worldofgames
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: worldofgames
+  template:
+    metadata:
+      labels:
+        app: worldofgames
+    spec:
+      containers:
+      - name: worldofgames-container
+        image: muradvalehfarajov/worldofgames:v1.0.0
+#        image: muradvalehfarajov/worldofgames:${IMAGE_TAG}
+        ports:
+        - containerPort: 8777
+        env:
+        - name: FLASK_APP
+          value: "start.py"
+        - name: FLASK_RUN_HOST
+          value: "0.0.0.0"
+        - name: FLASK_RUN_PORT
+          value: "8777"
+        volumeMounts:
+        - name: scores-volume
+          mountPath: /app/Scores.txt
+          subPath: Scores.txt
+      volumes:
+      - name: scores-volume
+        hostPath:
+          path: /mnt/sda1/Sevinj/Scores.txt

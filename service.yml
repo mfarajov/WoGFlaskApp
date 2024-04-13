@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: worldofgames-service
+spec:
+  selector:
+    app: worldofgames  # This should match the label of your pod
+  ports:
+    - protocol: TCP
+      port: 8777          # The service port
+      targetPort: 8777    # The container port
+  type: ClusterIP         # This exposes the service on an internal IP in the cluster
